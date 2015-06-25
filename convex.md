@@ -40,6 +40,14 @@ optimal trade off
 - Turn off alarm
 - Get out of bed
 
+## code example
+
+```python
+import numpy as np
+y = np.random.rand(5)
+print('hello', y)
+```
+
 ## Breakfast
 
 we need a way to represent math $x^{\pi^2}$
