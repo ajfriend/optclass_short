@@ -136,3 +136,49 @@ $$
   \frac{\partial^2 f}{\partial x_2 \partial x_1} && \frac{\partial^2 f}{\partial x_2^2}
 \end{bmatrix}
 $$
+
+## Surface plots and contours
+- show local minimizer/maximizer critical point
+- show saddle point
+
+## Higher dimensions
+- can't easily visualize
+- need analysis
+
+## Algorithms
+- Basic loop
+- Descent condition
+- Gradient descent
+- Newton's method
+
+## Show example on rosenbrock function
+- gradient descent vs. newton's method
+
+## Two very important optimization problems
+- linear least squares
+- non-linear least squares
+
+## Constraints
+- basic idea of constraints
+- work through example from multivariate calculus
+- introduce idea of multipliers
+- equality constraints
+- inequality constraints
+- linear constraints
+- nonlinear constraints
+
+## Penalty and barrier methods
+- introduce a penalty into the objective to penalize constraint violation
+
+## Linear programming
+
+## Discrete variables
+- Mixed integer programming
+- Scheduling problems
+
+## What's next
+- Nonlinear programming
+- Convex modelling
+- Study of algorithms
+- Modeling languages
+- Automated differentiation
