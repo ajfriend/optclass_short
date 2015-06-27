@@ -5,3 +5,12 @@ To generate `pdf` files:
 ```
 $ make
 ```
+
+## Requirements
+
+Mac OS X:
+
+```
+$ brew install poppler
+```
+
