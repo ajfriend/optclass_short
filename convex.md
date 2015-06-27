@@ -1,5 +1,5 @@
 ---
-title: A Sample Set of Slides
+title: Convex Optimization
 author: |
   | AJ Friend, Nick Henderson
   | (w/ material from Stephen Boyd and Steven Diamond)
@@ -24,6 +24,16 @@ add equality constraints,
 maximize a utility function, 
 satisfaction (feasibility),
 optimal trade off
+
+## Why convexity?
+- trade off between supervision and modeling power
+- nice theory
+- theoretical guarantees, global optimum, interpretability: (of local minimizers)
+- efficient algorithms
+- common language 
+- (leaky) abstraction: once you've modeled as a convex problem, consider it solved
+- with proper training, hearing "your problem is convex" offers
+deep, cosmic reassurance
 
 
 # In the morning
