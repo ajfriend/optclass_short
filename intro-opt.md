@@ -64,34 +64,112 @@ $$
 \end{array}
 $$
 
-* $x$ is real number variable
+. . .
 
-* $f(x)$ is the objective function, we typically want this to be twice
-  continuously differentiable.  This means both the first and second derivative
-  are continuous in $x$
+* $x$ is a real variable
 
-* We are looking for a point $x^*$ such that $f'(x)=0$ and $f''(x)>0$.  Note
-  that this is a *local* optimizer
+. . .
 
-\note{
-  these points are only so helpful, we need a picture
-}
+* $f(x)$ is the objective function, which returns a single real number
 
-## Optimization in one variable
+. . .
 
-\note{
-  draw picture with words... graph of x vs. f(x) with key words
-}
+* Local optimization: look for a point $x^*$ such that $f(x^*) \le f(x)$ for all
+  points $x$ near $x^*$
 
-## Key words
+. . .
+
+* Global optimization: look for a point $x^*$ such that $f(x^*) \le f(x)$ for all
+points $x$ in domain of interest
+
+. . .
+
+* When $f(x)$ is twice continuously differentiable, then local optimization
+  involves finding a point $x^*$ such that $f'(x^*)=0$ and $f''(x^*)>0$
+
+## Optimization in one variable: axis
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-1.pdf}
+
+## Optimization in one variable: definitions
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-2.pdf}
+
+## Optimization in one variable: example objective function
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-3.pdf}
+
+## Optimization in one variable: critical points, $f'(x) = 0$
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-4.pdf}
+
+## Optimization in one variable: local optima
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-5.pdf}
+
+## Optimization in one variable: local optima, $f''(x) = ?$
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-6.pdf}
+
+## Optimization in one variable: unbounded below
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-7.pdf}
+
+## Optimization in one variable: saddle point, $f'(x)=0$ and $f''(x) = 0$
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-8.pdf}
+
+## Optimization in one variable: convex objective
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-9.pdf}
+
+## Key definitions
 
 * *domain*: space for input variable $x$
-* *range*: space for output $f(x)$
+* *range*: space for output of objective function $f(x)$
 * *critical point*: $f'(x) = 0$
 * *local minimizer*: $f'(x) = 0$ and $f''(x) > 0$
 * *local maximizer*: $f'(x) = 0$ and $f''(x) < 0$
 * *saddle point*: $f'(x) = 0$ and $f''(x) = 0$
 * *global minimizer*: $x^*$ such that $f(x^*) \le f(x)$ for all $x$ in domain
+
+## Optimization in one variable: algorithm basics
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-10.pdf}
+
+## Optimization in one variable: algorithm basics
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-11.pdf}
+
+## Optimization in one variable: algorithm basics
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-12.pdf}
+
+## Optimization in one variable: algorithm basics
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-13.pdf}
+
+## Optimization in one variable: algorithm basics
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-14.pdf}
+
+## Optimization in one variable: algorithm basics
+
+. . .
+
+* Start with an initial guess $x_0$
+
+. . .
+
+* Goal: generate sequence that converges to solution
+$$
+x_0, x_1, x_2, x_3, \dots \to x^*
+$$
+
+. . .
+
+* Notation for sequence and convergence: $\{x_k\} \to x^*$
+
+. . .
+
+* Key algorithm property: **_descent condition_**
+$$
+f(x_{k+1}) < f(x_k)
+$$
+
+. . .
+
+* Technical algorithm property: **_convergence to solution_**
+$$
+|x_{k+1} - x_k| \to 0\ \text{if and only if}\ f'(x_k) \to 0
+\ \text{and}\ \lim_{k\to\infty} f''(x_k) \ge 0
+$$
 
 ## Optimization in two variables
 
@@ -184,11 +262,11 @@ $$
 - Modeling languages
 - Automated differentiation
 
-## Test image
+## Test image 1
 
-\includegraphics[width=\textwidth]{fig/graph-1.pdf}
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-1.pdf}
 
-## Test image
+## Test image 2
 
-\includegraphics[width=\textwidth]{fig/test-1.pdf}
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-2.pdf}
 
