@@ -23,11 +23,10 @@ PANDOC_DEPS := formatting.tex talk_defs.tex
 # targets for graph sequence pdfs
 
 ## intro-opt.pdf depends on graph sequence
-intro-opt.pdf: graph-sequence
+intro-opt.pdf: intro-opt-fig/graph-sequence-1.pdf
 
 ## split the graph-sequence.pdf
-.PHONY: graph-sequence
-graph-sequence:
+intro-opt-fig/graph-sequence-1.pdf: intro-opt-fig/graph-sequence.pdf
 	pdfseparate intro-opt-fig/graph-sequence.pdf intro-opt-fig/graph-sequence-%d.pdf 
 
 ## clean up split pdfs
