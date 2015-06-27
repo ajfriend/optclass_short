@@ -186,9 +186,9 @@ $$
 
 ## Test image
 
-\includegraphics[width=\textwidth]{fig/graph-1.pdf}
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-1.pdf}
 
 ## Test image
 
-\includegraphics[width=\textwidth]{fig/test-1.pdf}
+\includegraphics[width=\textwidth]{intro-opt-fig/test-1.pdf}
 

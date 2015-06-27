@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := all
 
 .PHONY: all
-all: convex.pdf optimization-intro.pdf
+all: convex.pdf intro-opt.pdf
 
 PANDOC := pandoc
 PANDOC_FLAGS := -t beamer
@@ -23,6 +23,6 @@ PANDOC_DEPS := formatting.tex talk_defs.tex
 .PHONY: clean
 clean:
 	$(RM) convex.pdf
-	$(RM) optimization-intro.pdf
 	$(RM) convex.tex
-	$(RM) optimization-intro.tex	
+	$(RM) intro-opt.pdf
+	$(RM) intro-opt.tex	
