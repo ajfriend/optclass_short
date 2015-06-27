@@ -13,3 +13,6 @@ http://pandoc.org/demo/example9/producing-slide-shows-with-pandoc.html
 https://github.com/sebastianbarfort/numedig/blob/master/2-workflow/slides/slides.md
 
 look up "metadata blocks" in <http://pandoc.org/demo/example9/pandocs-markdown.html>
+
+# todo
+- namedrop specific models: SVM, logistic, fitting, smoothing
