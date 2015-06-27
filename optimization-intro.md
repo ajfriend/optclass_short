@@ -13,14 +13,14 @@ date: June 28, 2015
 Optimization
 
 :   introducing a \textcolor{red}{change} to a \textcolor{blue}{system} to
-    achieve a \textcolor{purple}{better (or best) outcome}
+    achieve a \textcolor{green}{better (or best) outcome}
 
 . . .
 
 Optimized
 
 :   there does not exist a \textcolor{red}{(known) change} to a
-    \textcolor{blue}{system} to achieve a \textcolor{purple}{better outcome}
+    \textcolor{blue}{system} to achieve a \textcolor{green}{better outcome}
 
 \note{
 Here are some notes for this slide.  These are not placed in the slides pdf.  We
@@ -32,12 +32,12 @@ can use this for speaking notes corresponding to the slides!  BAM.
 Optimization
 
 :   introducing a \textcolor{red}{change} to a \textcolor{blue}{system} to
-    achieve a \textcolor{purple}{better (or best) outcome}
+    achieve a \textcolor{green}{better (or best) outcome}
 
 Optimized
 
 :   there does not exist a \textcolor{red}{(known) change} to a
-    \textcolor{blue}{system} to achieve a \textcolor{purple}{better outcome}
+    \textcolor{blue}{system} to achieve a \textcolor{green}{better outcome}
 
 . . .
 
@@ -45,7 +45,7 @@ Optimized
 
 * \textcolor{red}{change}: change to input variables (parameters)
 
-* \textcolor{purple}{outcome}: a measure of performance of the model, objective
+* \textcolor{green}{outcome}: a measure of performance of the model, objective
   function
 
 \note{
@@ -91,6 +91,7 @@ $$
 * *local minimizer*: $f'(x) = 0$ and $f''(x) > 0$
 * *local maximizer*: $f'(x) = 0$ and $f''(x) < 0$
 * *saddle point*: $f'(x) = 0$ and $f''(x) = 0$
+* *global minimizer*: $x^*$ such that $f(x^*) \le f(x)$ for all $x$ in domain
 
 ## Optimization in two variables
 
@@ -123,7 +124,7 @@ Gradient of $f$:
 
 $$
 \nabla f(x) = \begin{bmatrix}
-  \frac{\partial f}{\partial x_1} \\
+  \frac{\partial f}{\partial x_1} \\[.5em]
   \frac{\partial f}{\partial x_2}
 \end{bmatrix}
 $$
@@ -132,7 +133,7 @@ $$
 
 $$
 \nabla^2 f(x) = \begin{bmatrix}
-  \frac{\partial^2 f}{\partial x_1^2}            && \frac{\partial^2 f}{\partial x_1 \partial x_2}\\
+  \frac{\partial^2 f}{\partial x_1^2}            && \frac{\partial^2 f}{\partial x_1 \partial x_2}\\[1em]
   \frac{\partial^2 f}{\partial x_2 \partial x_1} && \frac{\partial^2 f}{\partial x_2^2}
 \end{bmatrix}
 $$
@@ -182,3 +183,12 @@ $$
 - Study of algorithms
 - Modeling languages
 - Automated differentiation
+
+## Test image
+
+\includegraphics[width=\textwidth]{fig/graph-1.pdf}
+
+## Test image
+
+\includegraphics[width=\textwidth]{fig/test-1.pdf}
+
