@@ -184,11 +184,11 @@ $$
 - Modeling languages
 - Automated differentiation
 
-## Test image
+## Test image 1
 
-\includegraphics[width=\textwidth]{intro-opt-fig/graph-1.pdf}
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-1.pdf}
 
-## Test image
+## Test image 2
 
-\includegraphics[width=\textwidth]{intro-opt-fig/test-1.pdf}
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-2.pdf}
 

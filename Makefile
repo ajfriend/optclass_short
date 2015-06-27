@@ -20,6 +20,21 @@ PANDOC_DEPS := formatting.tex talk_defs.tex
 %.tex: %.md $(PANDOC_DEPS)
 	$(PANDOC) $(PANDOC_FLAGS) $< -o $@
 
+# targets for graph sequence pdfs
+
+## intro-opt.pdf depends on graph sequence
+intro-opt.pdf: graph-sequence
+
+## split the graph-sequence.pdf
+.PHONY: graph-sequence
+graph-sequence:
+	pdfseparate intro-opt-fig/graph-sequence.pdf intro-opt-fig/graph-sequence-%d.pdf 
+
+## clean up split pdfs
+.PHONY: clean-graph-sequence
+clean-graph-sequence:
+	$(RM) intro-opt-fig/graph-sequence-*.pdf
+
 .PHONY: clean
 clean:
 	$(RM) convex.pdf
