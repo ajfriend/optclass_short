@@ -28,7 +28,7 @@ Here are some notes for this slide.  These are not placed in the slides pdf.  We
 can use this for speaking notes corresponding to the slides!  BAM.
 }
 
-## Mathematical Optimization
+## Mathematical optimization
 
 Optimization
 
@@ -53,7 +53,53 @@ Optimized
   Basic idea is that this defines precise definitions for all of the words.
 }
 
-## The Raptor Problem
+## Mathematical optimization
+
+Mathematical optimization problem has form
+$$
+\begin{array}{ll} \mbox{minimize} & f_0(x)\\
+\mbox{subject to} & f_i(x) \leq 0, \quad i=1,\ldots,m
+\end{array}
+$$
+
+* $x\in \reals^n$ is \textbf{decision variable} (to be found)
+* $f_0$ is objective function; $f_i$ are constraint functions
+* problem data are hidden inside $f_0,\ldots, f_m$
+
+## The good news
+
+__Everything__ is an optimization problem
+
+* *choose parameters* in model to fit data
+  (minimize misfit or error on observed data)
+* *optimize actions* (minimize cost or maximize profit)
+* *allocate resources* over time
+  (minimize cost, power; maximize utility)
+* *engineering design*
+  (trade off weight, power, speed, performance, lifetime)
+
+## The bad news
+
+In full generality, optimization problems can be quite difficult
+
+* generally NP-hard
+
+* heuristics required, hand-tuning, luck, babysitting
+
+
+. . .
+
+But...
+
+* we can do a lot by restricting to convex models (AJ's talk)
+
+* we have good computational tools
+
+    * modeling languages (CVX, CVXPY, JuMP, AMPL, GAMS) to write problems down
+
+    * solvers (IPOPT, SNOPT, Gurobi, CPLEX, Sedumi, SDPT3, ...) to obtain solutions
+
+## Example: The Raptor Problem
 
 See other slides
 
