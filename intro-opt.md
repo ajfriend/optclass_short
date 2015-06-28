@@ -12,16 +12,7 @@ date: June 28, 2015
 Optimization
 
 :   finding a best (or good enough) choice among the set of options for a certain
-    objective
-
-. . .
-
-* \textcolor{blue}{system}: mathematical model
-
-* \textcolor{red}{change}: change to input variables (parameters)
-
-* \textcolor{green}{outcome}: a measure of performance of the model, objective
-  function
+    objective subject to a set of constraints
 
 ## Mathematical optimization
 
@@ -33,8 +24,13 @@ $$
 $$
 
 * $x\in \reals^n$ is \textbf{decision variable} (to be found)
+
 * $f_0$ is objective function; $f_i$ are constraint functions
+
 * problem data are hidden inside $f_0,\ldots, f_m$
+
+* variations: add equality constraints, maximize a utility function,
+  satisfaction (feasibility), optimal trade off, and more
 
 ## The good news
 
@@ -201,7 +197,7 @@ $$
 
     * First derivative or gradient of $f$ is written $\nabla f(x)$
 
-    * Second derivate or Hessian of $f$ is written $\nabla^2 f(x)$
+    * Second derivative or Hessian of $f$ is written $\nabla^2 f(x)$
 
 * We are looking for a point $x^*$ such that $\nabla f(x)=0$ and
   $\nabla^2 f(x) \succeq 0$.  Note that this is a *local* optimizer
@@ -289,17 +285,17 @@ Procedure: start with initial guess $\alpha > 0$ (use $\alpha=1$ for Newton's me
 
 3. repeat
 
-## Optimization on rosenbrock function
+## Optimization on Rosenbrock function
 
 \centering
 \includegraphics[width=\textwidth]{intro-opt-code/gd-nm-iter.pdf}
 
-## Optimization on rosenbrock function
+## Optimization on Rosenbrock function
 
 \centering
 \includegraphics[width=\textwidth]{intro-opt-code/gd-nm-iter-2.pdf}
 
-## Optimization on rosenbrock function
+## Optimization on Rosenbrock function
 
 \centering
 \includegraphics[width=\textwidth]{intro-opt-code/rosen-conv.pdf}
@@ -310,31 +306,139 @@ Procedure: start with initial guess $\alpha > 0$ (use $\alpha=1$ for Newton's me
 - Computational cost of linear algebra associated with optimization algorithm
 - Accuracy requirement in your application
 
-## Two very important optimization problems
-- linear least squares
-- non-linear least squares
+## Laying cable: another example
 
-## Constraints
-- basic idea of constraints
-- work through example from multivariate calculus
-- introduce idea of multipliers
-- equality constraints
-- inequality constraints
-- linear constraints
-- nonlinear constraints
+* Housing developer wants to minimize the length of cable needed to connect
+  houses to the internet
 
-## Penalty and barrier methods
-- introduce a penalty into the objective to penalize constraint violation
+* Each house must be connected to a distribution center (DC) through the trench
+  network
 
-## Linear programming
+* Question: how to choose location of distribution centers and the assignment of
+  houses to minimize cable length?
 
-## Discrete variables
-- Mixed integer programming
-- Scheduling problems
+## Laying cable: example development
 
-## What's next
-- Nonlinear programming
-- Convex modelling
-- Study of algorithms
-- Modeling languages
-- Automated differentiation
+\centering
+\includegraphics[width=.6\textwidth]{intro-opt-fig/cable-map.pdf}
+
+## Laying cable: data
+
+* 1676 houses
+* 1904 "junctions"
+* 3580 edges
+* 28 km of trench
+
+## Laying cable: problem
+
+Problem statement
+
+* Given a network of houses in a fully connected trench network, find the
+  location of distribution centers (DCs) and assignment of houses to minimize
+  cable length.
+
+Properties:
+
+* The combinatorial nature of this problem likely puts it in the class of NP-hard
+problems
+
+* there is no known algorithm to compute an optimal solution in a period of time
+that does not grow exponentially with the size of the problem
+
+Solution: alternating minimization
+
+* The first part is the assignment of DCs to junction nodes
+
+* The second is the assignment of houses to DCs
+
+* Not guaranteed to find an optimal solution.  However, experiments show it is a
+  practical solution
+
+## Laying cable: notation and variables
+
+\centering
+\begin{tabular}{cl}
+$h$ & number of houses \\
+$i$ & index over houses \\
+$c$ & number of DCs \\
+$j$ & index over DCs \\
+$n$ & number of junctions \\
+$k$ & index over junctions \\
+$A\in\reals^{h+n \times h+n}$ & adjacency matrix \\
+$D\in\reals^{h\times n}$ & distance matrix between houses and junctions\\
+$X\in\{0,1\}^{h\times c}$ & assignment matrix of houses to DCs \\
+$Y\in\{0,1\}^{c\times n}$ & assignment matrix of DCs to junctions \\
+$\delta$ & DC capacity
+\end{tabular}
+
+## Laying cable: distribution center placement
+
+Given housing assignment matrix $X$ and distance matrix $D$ the optimal DC
+assignment matrix $Y$ is easily computed.  First, compute the matrix of cable
+lengths for any DC placement:
+
+$$
+Z = X^T D \in \reals^{c\times n}.
+$$
+
+DC assignment matrix $Y$ is constructed to assign DC $j$ to junction
+$\text{argmin}_k\ Z_{jk}$ for all $j$.
+
+This is a simple computation and does not require optimization software.
+
+## Laying cable: assignment of houses to DCs
+
+Given DC assignment matrix $Y$ and distance matrix $D$ the optimal housing
+assignment matrix $X$ is computed using a LP/MIP solver.  First, compute
+the matrix of distances from each house to the fixed DC locations:
+
+$$
+C = DY^T \in \reals^{h \times c}.
+$$
+
+Second, use LP/MIP software to solve the optimization problem:
+
+$$
+\begin{array}{ll}
+\text{minimize}   & \text{vec}(C)^T \text{vec}(X) \\ 
+\text{subject to} & X \in \{0,1\}^{h\times c} \\
+                  & Xe_c = e_h \\
+                  & X^T e_h \le \delta e_c
+\end{array}
+$$
+
+## Laying cable: solution
+
+\centering
+\includegraphics[width=.8\textwidth]{intro-opt-fig/cable-solution.png}
+
+## Laying cable: results
+
+| configuration | length | cost (of cable) |
+|---------------|--------|-----------------|
+| initial       | 194 km | $110,580        |
+| optimized     | 127 km | $72,390         |
+|---------------|--------|-----------------|
+| difference    | -67 km | -$38,190        |
+
+## Laying cable: wrapping up
+
+* it is often useful (necessary) to decompose a hard problem into a sequence of
+  easier ones
+
+* good (and useful) solutions are not necessarily globally optimal
+
+* also good to map your problem to existing computational tools
+
+## Summary
+
+* Mathematical optimization is an important and useful tool in science,
+  engineering, and industry
+
+* The optimization community has produced a large set of good tools to solve
+  problems
+
+    * there are a mix of open-source and commercial packages
+
+* Art: mapping your problem into a mathematical model that can be attacked using
+  an existing tool
