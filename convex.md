@@ -27,7 +27,10 @@ satisfaction (feasibility),
 optimal trade off
 
 ## this talk
+- high-level overview of convex optimization
+- practical, lots of examples
 - give a feel for what convex optimization is and what it can do
+- few details. no theory
 - some of the feel, philosophy, biases I've collected
 
 ## convexity definition
@@ -70,6 +73,11 @@ deep, cosmic relief
 - modeling language
 - construct instead of check for convexity
 - composition rules
+
+## CVXPY in one slide
+lasso example
+math matches code
+lambda -> rho
 
 ## applications
 - inversion
@@ -116,7 +124,7 @@ $$
     - express in code
     - invoke convex solver
     - made easier with model-and-solve tool, e.g., `CVXPY`
-    - use different solvers/algorithms for speed or scale, if needed
+    - use other solvers/algorithms for speed or scale, if needed
 
 
 ## code example
@@ -146,6 +154,79 @@ prob.solve(solver=SCS)
 
 ## Example ($80\%$ of pixels removed)
 \includegraphics[width=\textwidth]{convex-fig/inpaint80_2}
+
+
+# Fault detection
+
+## Statistical model fitting
+- fitting parameters in statistical models is often convex
+    - least-squares
+    - general maximum-likelihood estimation
+- when not convex, approximations can work surprisingly well
+
+## Fault detection
+- each of $n$ possible faults occurs independently with probability $p$
+- encode as $x_i\in\{0,1\}$
+- $m$ sensors measure system performance 
+- sensor output is $y=Ax+v = \sum_{i=1}^n x_i a_i + v$
+- $v$ is Gaussian noise with variance $\sigma^2$
+- $a_i\in \reals^m$ is \emph{fault signature} for fault $i$
+- signal-to-noise ratio
+$$
+\mathrm{SNR} = \frac{\Expect{\|Ax\|^2}}{\Expect{\|v\|^2}}
+$$
+- **goal**:
+guess $x$ (which faults have occurred) given $y$ (sensor measurements)
+
+## Maximum likelihood estimation
+- choose $x\in \{0,1\}^n$
+to minimize negative log likelihood function
+$$
+\ell(x) = \frac{1}{2 \sigma^2} \|Ax-y\|_2^2 +  \log(1/p-1)\ones^T x + c,
+$$
+- nonconvex, NP-hard
+- instead solve convex (relaxed) problem
+$$
+\begin{array}{ll}
+\mbox{minimize} &  \|Ax-y\|_2^2 + 2 \sigma^2 \log(1/p-1)\ones^T x\\
+\mbox{subject to} &  0 \leq x_i \leq 1, \quad i=1, \ldots n
+\end{array}
+$$
+and round
+- called \textbf{relaxed ML} estimate
+
+## Relaxed ML CVXPY code
+$$
+\begin{array}{ll}
+\mbox{minimize} &  \|Ax-y\|_2^2 + 2 \sigma^2 \log(1/p-1)\ones^T x\\
+\mbox{subject to} &  0 \leq x_i \leq 1, \quad i=1, \ldots n
+\end{array}
+$$
+
+```python
+from cvxpy import *
+x = Variable(n)
+tau = 2*log(1/p - 1)*sigma**2
+obj = Minimize(sum_squares(A*x-y) + tau*sum_entries(x))
+constr = [0<=x, x<=1]
+Problem(obj,constr).solve()
+
+x_rml = np.array(x.value).flatten()
+x_rnd = (x_rml>=.5).astype(int)
+```
+
+## Example
+$n=2000$ possible faults, $m=200$ measurements
+
+$p = 0.01$, SNR $=5$
+
+\includegraphics[width=\textwidth]{convex-fig/fault}
+
+- perfect fault recovery!
+
+
+# Robust Kalman filtering
+## Robust Kalman filtering
 
 
 # What we left out
