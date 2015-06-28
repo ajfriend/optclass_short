@@ -1,8 +1,9 @@
 ---
 title: Introduction to (Mathematical) Optimization
 author: |
-  | AJ Friend, Nick Henderson
+  | **Nick Henderson**, AJ Friend
   | (w/ material from Stephen Boyd and Steven Diamond)
+  | Stanford University
 date: June 28, 2015
 ---
 
