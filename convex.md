@@ -9,7 +9,12 @@ date: June 28, 2015
 
 # Mathematical optimization
 
-## (mathy math)
+## this talk
+- high-level (biased) overview of convex optimization
+- (fancy?) examples
+- why *restrict* yourself to using convex optimization?
+
+## Mathematical optimization
 optimization problem has form
 $$
 \begin{array}{ll} \mbox{minimize} & f_0(x)\\
@@ -26,71 +31,99 @@ maximize a utility function,
 satisfaction (feasibility),
 optimal trade off
 
-## this talk
-- high-level overview of convex optimization
-- practical, lots of examples
-- give a feel for what convex optimization is and what it can do
-- few details. no theory
-- some of the feel, philosophy, biases I've collected
+## Convex optimization
+**convex** optimization problem has form
+$$
+\begin{array}{ll} \mbox{minimize} & f_0(x)\\
+\mbox{subject to} & f_i(x) \leq 0, \quad i=1,\ldots,m
+\end{array}
+$$
 
-## convexity definition
-- sets
-- functions
-- in constraints: level sets are convex
-- in objective: local minimizers are global
-- picture?
+- $f_0, \ldots, f_m$ **convex**: for $\theta \in [0,1]$,
+$$
+f_i(\theta x + (1-\theta)y ) \leq \theta f_i(x) + (1-\theta)f_i(y)
+$$
+i.e., $f_i$ have nonnegative (upward) curvature
 
-## modeling with convexity
-- sets of convex function and set *atoms*
-- convexity preserving operations
-    - addition, composition, partial minimization, \ldots
-- transformation of seemingly non-convex problems into convex
-- convex approximation
-- using DCP (disciplined convex programming)
-    - code is very code to the math
-    - convenient for humans
-    - does the problem transformations for you
-    - calls the solver
-    - transforms back into your variables
+## Non-convex function
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-3}
 
+## Convex function
+\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-9}
 
 ## Why convexity?
-- trade off between supervision and modeling power
-- nice theory
-- theoretical guarantees, global optimum, interpretability: (of local minimizers)
-- efficient algorithms give global solutions in polynomial time
-- common language, conceptual unification
-- useful subroutine for non-convex optimization (local convex approximation)
-- (leaky) abstraction: once you've modeled as a convex problem, consider it solved
+- local minimizers are global
+- most optimization problems often cannot be solved; **convex** problems (usually) can be
+- useful theory of convexity
+- effective algorithms and available software
+    - global solutions
+    - polynomial complexity
+    - algorithms that scale
+- convenient **language** to discuss problems
+- unifies many methods; subroutine for non-convex problems
+- expressive: **lots of applications**
+
+## Applications
+- machine learning, statistics
+- finance
+- supply chain, revenue management, advertising
+- control
+- signal and image processing, vision
+- networking
+- circuit design
+- combinatorial optimization
+- quantum mechanics
+- flux-based analysis
+
+# Modeling with convexity
+
+## Approach
+- try to formulate your problem as convex
+- **build** model guaranteed to be convex from convex atoms and composition rules
+- if you succeed, you can (usually) solve it (numerically)
+- if non-convex, approximations can work surprisingly well
+- an **interface**: say what you want, not how to get it
+
+## CVXPY
+- we'll use CVXPY (`www.cvxpy.org`), convex modeling and solving tool in Python
+- write code very close to the math
+- CVXPY and similar tools allow for rapid prototyping
+- does the work for you:
+    - checks convexity
+    - transforms problem (no matrix stuffing by hand!)
+    - interface to several solvers
+
+## CVXPY example
+**math**:
+(constrained LASSO)
+$$
+\begin{array}{ll} \mbox{minimize} & \|Ax-b\|_2^2+ \rho \|x\|_1\\
+\mbox{subject to} & \ones^T x = 0, \quad \|x\|_\infty \leq 1
+\end{array}
+$$
+with variable $x\in \reals^n$
+
+**code**:
+```python
+from cvxpy import *
+x = Variable(n)
+obj = sum_squares(A*x-b) + rho*norm(x,1)
+constr = [sum_entries(x)==1, norm(x,'inf')<=1]
+Problem(obj,constr).solve()
+```
+
+## Summary
+- good trade-off between algorithmic supervision and modeling power
+- lots of theoretical, algorithmic, and software tools
 - with proper training, "your problem is convex" offers
 deep, cosmic relief
-- almost a technology, (like least squares)
-- prototype quickly with generic solvers
-- use other methods for speed and scale if necessary
-
-## using convexity
-- modeling
-- modeling language
-- construct instead of check for convexity
-- composition rules
-
-## CVXPY in one slide
-lasso example
-math matches code
-lambda -> rho
-
-## applications
-- inversion
-- engineering design
-- optimal control
-- model fitting
 
 # Image in-painting
 
 ## Image in-painting
 \includegraphics[width=\textwidth]{convex-fig/inpaint_text1}
 
-## Example
+## Image in-painting
 guess pixel values in obscured/corrupted parts of image
 
 - **decision variable** $x \in \reals^{m \times n \times 3}$
@@ -143,7 +176,7 @@ prob = Problem(Minimize(tv(*variables)), constr)
 prob.solve(solver=SCS)
 ```
 
-## Example
+## Example: $512 \times 512$ color image; about 800k variables
 \includegraphics[width=\textwidth]{convex-fig/inpaint_text1}
 
 ## Example
@@ -225,15 +258,95 @@ $p = 0.01$, SNR $=5$
 - perfect fault recovery!
 
 
-# Robust Kalman filtering
-## Robust Kalman filtering
+# Vehicle tracking
+## Vehicle tracking
+\includegraphics[width=1\textwidth]{convex-fig/rkf1.pdf}
+
+## Kalman filtering
+- estimate vehicle path from noisy position measurements (with outliers)
+- dynamic model of vehicle state $x_t$:
+$$
+x_{t+1} = Ax_t + Bw_t, \quad y_t=Cx_t + v_t
+$$
+    + $x_t$ is vehicle state (position, velocity)
+    + $w_t$ is unknown drive force on vehicle
+    + $y_t$ is position measurement; $v_t$ is noise
+
+- Kalman filter: estimate $x_t$ by minimizing
+$\sum_t \left(\|w_t\|_2^2+ \gamma \|v_t\|_2^2\right)$
+- a least-squares problem; assumes $w_t,v_t$ Gaussian
+
+## Robust Kalman filter
+- to handle outliers in $v_t$, replace square cost with Huber cost
+- **robust** Kalman filter:
+$$
+\begin{array}{ll}
+\mbox{minimize} & \sum_t \left( \|w_t\|^2_2 + \gamma \phi(v_t) \right)\\
+\mbox{subject to} & x_{t+1} = Ax_t + Bw_t, \quad y_t = Cx_t+v_t
+\end{array}
+$$
+where $\phi$ is Huber function
+$$
+\phi(a)= \left\{ \begin{array}{ll} \|a\|_2^2 & \|a\|_2\leq 1\\
+2\|a\|-1 & \|a\|_2>1
+\end{array}\right.
+$$
+- a convex problem
+
+## Huber loss function
+$$
+\begin{centering}
+\includegraphics[width=.46\textwidth]{convex-fig/huber.png}
+\end{centering}
+$$
+
+- outside $[-1, 1]$ interval, penalizes linearly, not quadratically
+- large errors more easily "forgiven", allowing fit to discount outliers
+
+## Robust KF CVXPY code
+
+```python
+from cvxpy import *
+x = Variable(4,n+1)
+w = Variable(2,n)
+v = Variable(2,n)
+    
+obj = sum_squares(w)
+obj += sum(huber(norm(v[:,t])) for t in range(n))
+obj = Minimize(obj)
+constr = []
+for t in range(n):
+    constr += [ x[:,t+1] == A*x[:,t] + B*w[:,t] ,
+                y[:,t]   == C*x[:,t] + v[:,t]   ]
+
+Problem(obj, constr).solve()
+```
+
+## Example
+- 1000 time steps
+- $w_t$ standard Gaussian 
+- $v_t$ standard Gaussian, except $30\%$ are outliers with $\sigma = 10$
+
+## Example
+\includegraphics[width=1\textwidth]{convex-fig/rkf1.pdf}
+
+## Example
+\includegraphics[width=1\textwidth]{convex-fig/rkf2.pdf}
+
+## Example
+\includegraphics[width=1\textwidth]{convex-fig/rkf3.pdf}
 
 
-# What we left out
-- beautiful theory
-    - optimality conditions
-    - dual variables and Lagrange multipliers
-    - certificates of optimality
+# Conclusions
+## Conclusions
+- convex optimization problems arise in many applications
+- can be solved effectively
+- high level languages (CVX, CVXPY) make prototyping easy
+
+but lots we couldn't cover in this presentation:
+
+- theory of convexity
+- duality/Lagrange multipliers
 - algorithms
     - (stochastic) gradient descent
     - interior point algorithms
@@ -241,9 +354,7 @@ $p = 0.01$, SNR $=5$
     - problem splitting for large scale and distributed optimization
 
 
-# References
-
-##
-- Convex optimization
-- CVX
-- CVXPY
+## References
+- *Convex Optimization* (Boyd & Vandenberghe)
+- *CVX: Matlab software for disciplined convex programming* (Grant & Boyd)
+- *CVXPY* (`www.cvxpy.org`)
