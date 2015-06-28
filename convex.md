@@ -9,7 +9,7 @@ date: June 28, 2015
 
 # Mathematical optimization
 
-## this talk
+## This talk
 - high-level (biased) overview of convex optimization
 - (fancy?) examples
 - why *restrict* yourself to using convex optimization?
@@ -160,7 +160,7 @@ $$
     - use other solvers/algorithms for speed or scale, if needed
 
 
-## code example
+## Code example
 
 ```python
 # K[i, j] == 1 if pixel value known, 0 if unknown
