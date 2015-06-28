@@ -270,7 +270,7 @@ Algorithm: $$ x_{k+1}\gets x_k + \alpha_k p_k $$
 Gradient descent: $$ p_k = -g_k = -\nabla f(x_k)$$
 
 Modified Newton's method:
-$$p_k = -(H_k+\lambda_k I)^{-1} g_k = (\nabla^2 f(x_k) +\lambda_k I)^{-1} \nabla f(x_k) $$
+$$p_k = -(H_k+\lambda_k I)^{-1} g_k = -(\nabla^2 f(x_k) +\lambda_k I)^{-1} \nabla f(x_k) $$
 
 ## Step length selection: backtracking
 
