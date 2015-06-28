@@ -8,36 +8,10 @@ date: June 28, 2015
 
 ## Optimization
 
-. . .
-
 Optimization
 
-:   introducing a \textcolor{red}{change} to a \textcolor{blue}{system} to
-    achieve a \textcolor{green}{better (or best) outcome}
-
-. . .
-
-Optimized
-
-:   there does not exist a \textcolor{red}{(known) change} to a
-    \textcolor{blue}{system} to achieve a \textcolor{green}{better outcome}
-
-\note{
-Here are some notes for this slide.  These are not placed in the slides pdf.  We
-can use this for speaking notes corresponding to the slides!  BAM.
-}
-
-## Mathematical optimization
-
-Optimization
-
-:   introducing a \textcolor{red}{change} to a \textcolor{blue}{system} to
-    achieve a \textcolor{green}{better (or best) outcome}
-
-Optimized
-
-:   there does not exist a \textcolor{red}{(known) change} to a
-    \textcolor{blue}{system} to achieve a \textcolor{green}{better outcome}
+:   finding a best (or good enough) choice among the set of options for a certain
+    objective
 
 . . .
 
@@ -47,10 +21,6 @@ Optimized
 
 * \textcolor{green}{outcome}: a measure of performance of the model, objective
   function
-
-\note{
-  Basic idea is that this defines precise definitions for all of the words.
-}
 
 ## Mathematical optimization
 
@@ -84,7 +54,6 @@ In full generality, optimization problems can be quite difficult
 * generally NP-hard
 
 * heuristics required, hand-tuning, luck, babysitting
-
 
 . . .
 
@@ -217,17 +186,17 @@ $$
 \ \text{and}\ \lim_{k\to\infty} f''(x_k) \ge 0
 $$
 
-## Optimization in two variables
+## Optimization in many variables
 
 $$
 \begin{array}{ll}
-\mbox{minimize} & f(x) \in C^2:\reals^2 \to \reals
+\mbox{minimize} & f(x) \in C^2:\reals^n \to \reals
 \end{array}
 $$
 
-* $x$ is a 2-dimensional vector of real variables
+* $x$ is an $n$-dimensional vector of real variables
 
-* $f(x)$ is the objective function
+* $f(x)$ is the objective function (twice continuously differentiable)
 
     * First derivative or gradient of $f$ is written $\nabla f(x)$
 
@@ -236,7 +205,11 @@ $$
 * We are looking for a point $x^*$ such that $\nabla f(x)=0$ and
   $\nabla^2 f(x) \succeq 0$.  Note that this is a *local* optimizer
 
-## The gradient $\nabla f(x)$
+    * $\nabla^2 f(x) \succeq 0$ means that all the eigenvalues of $\nabla^2
+      f(x)$ are non-negative
+
+
+## The gradient $\nabla f(x)$ in 2 variables
 
 Vector of variables:
 
@@ -253,7 +226,7 @@ $$
 \end{bmatrix}
 $$
 
-## The Hessian $\nabla^2 f(x)$
+## The Hessian $\nabla^2 f(x)$ in 2 variables
 
 $$
 \nabla^2 f(x) = \begin{bmatrix}
@@ -262,22 +235,79 @@ $$
 \end{bmatrix}
 $$
 
-## Surface plots and contours
-- show local minimizer/maximizer critical point
-- show saddle point
+## Let's look at an example
 
-## Higher dimensions
-- can't easily visualize
-- need analysis
+The Rosenbrock function:
 
-## Algorithms
-- Basic loop
-- Descent condition
-- Gradient descent
-- Newton's method
+$$
+f(x,y) = \left(1-x\right)^2 + 100\left(y-x^2\right)^2
+$$
 
-## Show example on rosenbrock function
-- gradient descent vs. newton's method
+## Rosenbrock contours
+
+\centering
+\includegraphics[width=.5\textwidth]{intro-opt-code/rosen-contour.pdf}
+
+## Basic optimization algorithm
+
+\centering
+\includegraphics[width=.8\textwidth]{intro-opt-fig/basic-algo.pdf}
+
+## Line search algorithms
+
+1. compute a search direction $p_k$
+
+    * for minimization, $p_k$ must be a descent direction, that is $p_k^T g_k < 0$
+
+2. select a step length $\alpha_k$ along $p_k$ such that
+   $f(x_k + \alpha_k p_k) < f(x_k)$
+
+    * (we need more technical requirements here)
+
+3. update the guess $x_{k+1}\gets x_k + \alpha_k p_k$
+
+## Example line search algorithms
+
+Algorithm: $$ x_{k+1}\gets x_k + \alpha_k p_k $$
+
+Gradient descent: $$ p_k = -g_k = -\nabla f(x_k)$$
+
+Modified Newton's method:
+$$p_k = -(H_k+\lambda_k I)^{-1} g_k = (\nabla^2 f(x_k) +\lambda_k I)^{-1} \nabla f(x_k) $$
+
+## Step length selection: backtracking
+
+Goal: given $p_k$ find $\alpha$ such that $f(x_k + \alpha p_k) < f(x_k)$.
+
+Procedure: start with initial guess $\alpha > 0$ (use $\alpha=1$ for Newton's method)
+
+1. if $f(x_k + \alpha p_k) < f(x_k)$, then return $\alpha$, otherwise continue
+
+2. decrease $\alpha$ by some factor $0 < \delta < 1$: $\alpha \gets
+   \delta\alpha$
+
+3. repeat
+
+## Optimization on rosenbrock function
+
+\centering
+\includegraphics[width=\textwidth]{intro-opt-code/gd-nm-iter.pdf}
+
+## Optimization on rosenbrock function
+
+\centering
+\includegraphics[width=\textwidth]{intro-opt-code/gd-nm-iter-2.pdf}
+
+## Optimization on rosenbrock function
+
+\centering
+\includegraphics[width=\textwidth]{intro-opt-code/rosen-conv.pdf}
+
+## Considerations in selecting optimization algorithms
+
+- Computational cost/scale of objective function
+- Computational cost of linear algebra associated with optimization algorithm
+- Accuracy requirement in your application
 
 ## Two very important optimization problems
 - linear least squares
@@ -307,12 +337,3 @@ $$
 - Study of algorithms
 - Modeling languages
 - Automated differentiation
-
-## Test image 1
-
-\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-1.pdf}
-
-## Test image 2
-
-\includegraphics[width=\textwidth]{intro-opt-fig/graph-sequence-2.pdf}
-
